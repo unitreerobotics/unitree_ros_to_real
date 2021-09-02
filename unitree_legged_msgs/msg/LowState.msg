@@ -5,6 +5,7 @@ uint32 SN                       # Old version Aliengo does not have
 uint8 bandWidth                 # Old version Aliengo does not have
 IMU imu
 MotorState[20] motorState
+BmsState bms                    # new on Go1, battery state
 int16[4] footForce              # force sensors     # Old version Aliengo is different
 int16[4] footForceEst           # force sensors     # Old version Aliengo does not have
 uint32 tick                     # reference real-time from motion controller (unit: us)

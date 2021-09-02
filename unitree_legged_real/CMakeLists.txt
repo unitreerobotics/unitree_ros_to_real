@@ -19,30 +19,14 @@ include_directories(
 
 set(CMAKE_CXX_FLAGS "-O3")
 
-if( $ENV{UNITREE_SDK_VERSION} STREQUAL "3_1")
-    include_directories($ENV{ALIENGO_SDK_PATH}/include)
-    link_directories($ENV{ALIENGO_SDK_PATH}/lib)
-    string(CONCAT LEGGED_SDK_NAME libaliengo_comm.so)
-    set(EXTRA_LIBS ${LEGGED_SDK_NAME} lcm)
+include_directories(/home/bian/Robot_SDK/unitree_legged_sdk/include)
+link_directories(/home/bian/Robot_SDK/unitree_legged_sdk/lib)
+string(CONCAT LEGGED_SDK_NAME libunitree_legged_sdk.so)
+set(EXTRA_LIBS ${LEGGED_SDK_NAME} lcm)
 
-    add_definitions(-DSDK3_1)
-
-    add_executable(lcm_server_3_1 $ENV{ALIENGO_SDK_PATH}/examples/lcm_server.cpp)
-    target_link_libraries(lcm_server_3_1 ${EXTRA_LIBS} ${catkin_LIBRARIES})
-    add_dependencies(lcm_server_3_1 ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
-elseif( $ENV{UNITREE_SDK_VERSION} STREQUAL "3_2")
-    include_directories($ENV{UNITREE_LEGGED_SDK_PATH}/include)
-    link_directories($ENV{UNITREE_LEGGED_SDK_PATH}/lib)
-    string(CONCAT LEGGED_SDK_NAME libunitree_legged_sdk_$ENV{UNITREE_PLATFORM}.so)
-    set(EXTRA_LIBS ${LEGGED_SDK_NAME} lcm)
-
-    add_definitions(-DSDK3_2)
-
-    add_executable(lcm_server_3_2 $ENV{UNITREE_LEGGED_SDK_PATH}/examples/lcm_server.cpp)
-    target_link_libraries(lcm_server_3_2 ${EXTRA_LIBS} ${catkin_LIBRARIES})
-    add_dependencies(lcm_server_3_2 ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-endif()
+add_executable(lcm_server /home/bian/Robot_SDK/unitree_legged_sdk/examples/lcm_server.cpp)
+target_link_libraries(lcm_server ${EXTRA_LIBS} ${catkin_LIBRARIES})
+add_dependencies(lcm_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 add_executable(position_lcm src/exe/position_mode.cpp)
 target_link_libraries(position_lcm ${EXTRA_LIBS} ${catkin_LIBRARIES})
