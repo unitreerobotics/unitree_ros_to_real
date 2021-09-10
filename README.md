@@ -4,7 +4,7 @@ Packages Version: v3.4.0
 This package can send control command to real robot from ROS. You can do low-level control(namely control all joints on robot) and high-level control(namely control the walking direction and speed of robot).
 
 This version is suitable for unitree_legged_sdk v3.4, namely Go1 robot. 
-As for Aliengo or A1, please use the v3.2 release version of this package and unitree_legged_sdk v3.2.
+As for Aliengo or A1, please use the [v3.2 release version of this package](https://github.com/unitreerobotics/unitree_ros_to_real/releases/tag/v3.2.1) and [unitree_legged_sdk v3.2](https://github.com/unitreerobotics/unitree_legged_sdk/releases/tag/v3.2).
 
 ## Packages:
 
@@ -13,7 +13,8 @@ Basic message function: `unitree_legged_msgs`
 The interface between ROS and real robot: `unitree_legged_real`
 
 # Dependencies
-* [unitree_legged_sdk](https://github.com/unitreerobotics): v3.4
+* [unitree_legged_sdk](https://github.com/unitreerobotics/unitree_legged_sdk): v3.4 (support robot Go1)
+* [unitree_legged_sdk](https://github.com/unitreerobotics/unitree_legged_sdk/releases/tag/v3.2): v3.2 (support robot Laikago, Aliengo, A1)
 
 # Configuration
 Before compiling this package, users have to modify the path to unitree_legged_sdk under the CMakeLists.txt of unitree_legged_real.
