@@ -178,9 +178,9 @@ unitree_legged_msgs::HighState ToRos(UNITREE_LEGGED_SDK::HighState& lcm)
         ros.footForceEst[i] = lcm.footForceEst[i];
     }
 
-    for(int i(0); i<20; ++i){
-        ros.temperature[i] = lcm.temperature[i];
-    }
+    // for(int i(0); i<20; ++i){
+    //     ros.temperature[i] = lcm.temperature[i];
+    // }
 
     for(int i(0); i<40; ++i){
         ros.wirelessRemote[i] = lcm.wirelessRemote[i];

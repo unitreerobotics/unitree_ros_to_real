@@ -14,7 +14,7 @@ float32[3] velocity                 # (unit: m/s), forwardSpeed, sideSpeed, rota
 float32 yawSpeed                    # (unit: rad/s), rotateSpeed in body frame        
 Cartesian[4] footPosition2Body      # foot position relative to body
 Cartesian[4] footSpeed2Body         # foot speed relative to body
-int8[20] temperature
+#int8[20] temperature
 BmsState bms
 int16[4] footForce                  # Old version Aliengo is different
 int16[4] footForceEst               # Old version Aliengo does not have
