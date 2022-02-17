@@ -13,7 +13,7 @@ Basic message function: `unitree_legged_msgs`
 The interface between ROS and real robot: `unitree_legged_real`
 
 # Dependencies
-* [unitree_legged_sdk](https://github.com/unitreerobotics): v3.4
+* [unitree_legged_sdk](https://github.com/unitreerobotics/unitree_legged_sdk): v3.4
 
 # Configuration
 Before compiling this package, users have to modify the path to unitree_legged_sdk under the CMakeLists.txt of unitree_legged_real.
