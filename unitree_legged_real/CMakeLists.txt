@@ -38,6 +38,10 @@ add_executable(lcm_server ${ROBOT_SDK}/unitree_legged_sdk/examples/lcm_server.cp
 target_link_libraries(lcm_server ${EXTRA_LIBS} ${catkin_LIBRARIES})
 add_dependencies(lcm_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
+add_executable(ros_server src/exe/ros_server_udp.cpp)
+target_link_libraries(ros_server ${EXTRA_LIBS} ${catkin_LIBRARIES})
+add_dependencies(ros_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
 add_executable(position_lcm src/exe/position_mode.cpp)
 target_link_libraries(position_lcm ${EXTRA_LIBS} ${catkin_LIBRARIES})
 add_dependencies(position_lcm ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
