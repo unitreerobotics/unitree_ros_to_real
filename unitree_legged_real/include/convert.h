@@ -105,9 +105,9 @@ unitree_legged_msgs::LowState ToRos(UNITREE_LEGGED_SDK::LowState& lcm)
 {
     unitree_legged_msgs::LowState ros;
     ros.levelFlag = lcm.levelFlag;
-    ros.commVersion = lcm.commVersion;
-    ros.robotID = lcm.robotID;
-    ros.SN = lcm.SN;
+    ros.commVersion = lcm.version[0];
+    ros.robotID = lcm.version[1];
+    ros.SN = lcm.SN[0];
     ros.bandWidth = lcm.bandWidth;
     ros.imu = ToRos(lcm.imu);
     for(int i = 0; i<20; i++){
@@ -131,9 +131,9 @@ UNITREE_LEGGED_SDK::LowCmd ToLcm(unitree_legged_msgs::LowCmd& ros, UNITREE_LEGGE
 {
     UNITREE_LEGGED_SDK::LowCmd lcm;
     lcm.levelFlag = ros.levelFlag;
-    lcm.commVersion = ros.commVersion;
-    lcm.robotID = ros.robotID;
-    lcm.SN = ros.SN;
+    lcm.version[0] = ros.commVersion;
+    lcm.version[1] = ros.robotID;
+    lcm.SN[0] = ros.SN;
     lcm.bandWidth = ros.bandWidth;
     for(int i = 0; i<20; i++){
         lcm.motorCmd[i] = ToLcm(ros.motorCmd[i], lcm.motorCmd[i]);
@@ -151,9 +151,9 @@ unitree_legged_msgs::HighState ToRos(UNITREE_LEGGED_SDK::HighState& lcm)
 {
     unitree_legged_msgs::HighState ros;
     ros.levelFlag = lcm.levelFlag;
-    ros.commVersion = lcm.commVersion;
-    ros.robotID = lcm.robotID;
-    ros.SN = lcm.SN;
+    ros.commVersion = lcm.version[0];
+    ros.robotID = lcm.version[1];
+    ros.SN = lcm.SN[0];
     ros.bandWidth = lcm.bandWidth;
     ros.mode = lcm.mode;
     ros.progress = lcm.progress;
@@ -193,9 +193,9 @@ UNITREE_LEGGED_SDK::HighCmd ToLcm(unitree_legged_msgs::HighCmd& ros, UNITREE_LEG
 {
     UNITREE_LEGGED_SDK::HighCmd lcm;
     lcm.levelFlag = ros.levelFlag;
-    lcm.commVersion = ros.commVersion;
-    lcm.robotID = ros.robotID;
-    lcm.SN = ros.SN;
+    lcm.version[0] = ros.commVersion;
+    lcm.version[1] = ros.robotID;
+    lcm.SN[0] = ros.SN;
     lcm.bandWidth = ros.bandWidth;
     lcm.mode = ros.mode;
     lcm.gaitType = ros.gaitType;
