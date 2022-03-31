@@ -1,5 +1,5 @@
 /************************************************************************
-Copyright (c) 2020, Kei Okada. All rights reserved.
+Copyright (c) 2022, Kei Okada. All rights reserved.
 Use of this source code is governed by the MPL-2.0 license, see LICENSE.
 ************************************************************************/
 
