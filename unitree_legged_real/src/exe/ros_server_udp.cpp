@@ -18,7 +18,7 @@ using namespace UNITREE_LEGGED_SDK;
 class Ros_Server_High
 {
 public:
-  Ros_Server_High(): udp(8090, "192.168.123.161", 8082, sizeof(HighCmd), sizeof(HighState)){
+  Ros_Server_High(uint16_t local_port, const char* target_ip, uint16_t target_port): udp(local_port, target_ip, target_port, sizeof(HighCmd), sizeof(HighState)){
     pub = n.advertise<unitree_legged_msgs::HighState>("high_state", 1);
     sub = n.subscribe<unitree_legged_msgs::HighCmd>("high_cmd", 1, [&](const unitree_legged_msgs::HighCmdConstPtr& msg){SendHighROS=*msg;});
     sub_vel = n.subscribe<geometry_msgs::Twist>("cmd_vel", 1, &Ros_Server_High::CmdVelCB, this);
@@ -123,7 +123,14 @@ void Ros_Server_High::RobotControl()
 int main(int argc, char *argv[]){
     ros::init(argc, argv, "ros_server");
 
-    Ros_Server_High server;
+    int local_port = 8090;
+    std::string target_ip = std::string("192.168.123.161");
+    int target_port = 8082;
+    ros::param::get("~local_port", local_port);
+    ros::param::get("~target_ip", target_ip);
+    ros::param::get("~target_port", target_port);
+
+    Ros_Server_High server(local_port, target_ip.c_str(), target_port);
     LoopFunc loop_control("control_loop", 0.002, boost::bind(&Ros_Server_High::RobotControl, &server));
     LoopFunc loop_udpSend("UDP_Send", 0.002, 3, boost::bind(&Ros_Server_High::UDPSend, &server));
     LoopFunc loop_udpRecv("UDP_Recv", 0.002, 3, boost::bind(&Ros_Server_High::UDPRecv, &server));
