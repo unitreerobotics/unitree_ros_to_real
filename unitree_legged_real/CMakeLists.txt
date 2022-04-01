@@ -31,7 +31,7 @@ if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "x86_64.*")
 else()
   set(ARCH arm64)
 endif()
-string(CONCAT LEGGED_SDK_NAME libunitree_legged_sdk_amd64.so)
+string(CONCAT LEGGED_SDK_NAME libunitree_legged_sdk_${ARCH}.so)
 set(EXTRA_LIBS ${LEGGED_SDK_NAME} lcm)
 
 add_executable(lcm_server ${ROBOT_SDK}/unitree_legged_sdk/examples/lcm_server.cpp)
