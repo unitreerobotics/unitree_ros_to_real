@@ -39,6 +39,7 @@ target_link_libraries(lcm_server ${EXTRA_LIBS} ${catkin_LIBRARIES})
 add_dependencies(lcm_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 add_executable(ros_server src/exe/ros_server_udp.cpp)
+#add_executable(ros_server src/exe/ros_server_lcm.cpp)
 target_link_libraries(ros_server ${EXTRA_LIBS} ${catkin_LIBRARIES})
 add_dependencies(ros_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 

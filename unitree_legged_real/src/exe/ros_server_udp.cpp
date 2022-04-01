@@ -56,6 +56,34 @@ void Ros_Server_High::RobotControl()
     udp.GetRecv(state);
     RecvHighROS = ToRos(state);
     pub.publish(RecvHighROS);
+    ROS_INFO_THROTTLE(1, "** STATE **");
+    ROS_INFO_THROTTLE(1, "head                %8d %8d", state.head[0], state.head[0]);
+    ROS_INFO_THROTTLE(1, "levelFlag           %8d", state.levelFlag);
+    ROS_INFO_THROTTLE(1, "SN                  %8d %8d", state.SN[0], state.SN[1]);
+    ROS_INFO_THROTTLE(1, "version             %8d %8d", state.version[0], state.version[0]);
+    ROS_INFO_THROTTLE(1, "bandWidth           %8d", state.bandWidth);
+    ROS_INFO_THROTTLE(1, "imu.temperature     %d", state.imu.temperature);
+    ROS_INFO_THROTTLE(1, "imu.quaternion      %f %f %f %f", state.imu.quaternion[0], state.imu.quaternion[1], state.imu.quaternion[2], state.imu.quaternion[3]);
+    ROS_INFO_THROTTLE(1, "imu.gyroscope       %f %f %f", state.imu.gyroscope[0], state.imu.gyroscope[1], state.imu.gyroscope[2]);
+    ROS_INFO_THROTTLE(1, "imu.accelerometer   %f %f %f", state.imu.accelerometer[0], state.imu.accelerometer[1], state.imu.accelerometer[2]);
+    ROS_INFO_THROTTLE(1, "bms                 %d", state.bms.bms_status);
+    ROS_INFO_THROTTLE(1, "footForce           %d %d %d %d", state.footForce[0], state.footForce[1], state.footForce[2], state.footForce[3]);
+    ROS_INFO_THROTTLE(1, "footForceEst        %d %d %d %d", state.footForceEst[0], state.footForceEst[1], state.footForceEst[2], state.footForceEst[3]);
+    ROS_INFO_THROTTLE(1, "mode                %8d", state.mode);
+    ROS_INFO_THROTTLE(1, "progress            %f", state.progress);
+    ROS_INFO_THROTTLE(1, "gaitType            %d", state.gaitType);
+    ROS_INFO_THROTTLE(1, "footRaiseHeight     %f", state.footRaiseHeight);
+    ROS_INFO_THROTTLE(1, "position            %f %f", state.position[0], state.position[1]);
+    ROS_INFO_THROTTLE(1, "bodyHeight          %f", state.bodyHeight);
+    ROS_INFO_THROTTLE(1, "velocity            %f %f", state.velocity[0], state.velocity[1]);
+    ROS_INFO_THROTTLE(1, "yawSpeed            %f", state.yawSpeed);
+    ROS_INFO_THROTTLE(1, "rangeObstacle       %f %f %f %f", state.rangeObstacle[0], state.rangeObstacle[1], state.rangeObstacle[2], state.rangeObstacle[3]);
+    ROS_INFO_THROTTLE(1, "footPosition2Body   (%f %f %f) (%f %f %f) (%f %f %f) (%f %f %f)", state.footPosition2Body[0].x, state.footPosition2Body[0].y, state.footPosition2Body[0].z, state.footPosition2Body[1].x, state.footPosition2Body[1].y, state.footPosition2Body[1].z, state.footPosition2Body[2].x, state.footPosition2Body[2].y, state.footPosition2Body[2].z, state.footPosition2Body[3].x, state.footPosition2Body[3].y, state.footPosition2Body[3].z);
+    ROS_INFO_THROTTLE(1, "footSpeed2Body      (%f %f %f) (%f %f %f) (%f %f %f) (%f %f %f)", state.footSpeed2Body[0].x, state.footSpeed2Body[0].y, state.footSpeed2Body[0].z, state.footSpeed2Body[1].x, state.footSpeed2Body[1].y, state.footSpeed2Body[1].z, state.footSpeed2Body[2].x, state.footSpeed2Body[2].y, state.footSpeed2Body[2].z, state.footSpeed2Body[3].x, state.footSpeed2Body[3].y, state.footSpeed2Body[3].z);
+    //ROS_INFO_THROTTLE(1, "wirelessRemote     ");for(int i = 0; i < 40; i++) ROS_INFO_THROTTLE(1, " %d", state.wirelessRemote[i]); ROS_INFO_THROTTLE(1, "");
+    ROS_INFO_THROTTLE(1, "reserve             %d", state.reserve);
+    ROS_INFO_THROTTLE(1, "crc                 %d", state.crc);
+
 
     // need to keep original cmd.head to move robots
     std::array<uint8_t, 2> head = cmd.head;
@@ -63,6 +91,7 @@ void Ros_Server_High::RobotControl()
     cmd.head = head;
 
     //
+    ROS_INFO_THROTTLE(1, "** COMMAND **");
     ROS_INFO_THROTTLE(1, "head                %8d %8d", cmd.head[0], cmd.head[1]);
     ROS_INFO_THROTTLE(1, "levelFlag           %8d", cmd.levelFlag);
     ROS_INFO_THROTTLE(1, "frameReserve        %8d", cmd.frameReserve);
