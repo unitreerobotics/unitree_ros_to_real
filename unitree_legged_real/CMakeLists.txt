@@ -19,14 +19,29 @@ include_directories(
 
 set(CMAKE_CXX_FLAGS "-O3")
 
+set(ROBOT_SDK ${CATKIN_DEVEL_PREFIX}/../../../src CACHE PATH "Location of unitree_legged_sdk directory")
+message("-- ROBOT_SDK ${ROBOT_SDK}")
+include_directories(${ROBOT_SDK}/unitree_legged_sdk/include)
+link_directories(${ROBOT_SDK}/unitree_legged_sdk/lib)
 include_directories(/home/$ENV{USER}/Robot_SDK/unitree_legged_sdk/include)
 link_directories(/home/$ENV{USER}/Robot_SDK/unitree_legged_sdk/lib)
-string(CONCAT LEGGED_SDK_NAME libunitree_legged_sdk_amd64.so)
+message("-- CMAKE_SYSTEM_PROCESSOR: ${CMAKE_SYSTEM_PROCESSOR}")
+if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "x86_64.*")
+  set(ARCH amd64)
+else()
+  set(ARCH arm64)
+endif()
+string(CONCAT LEGGED_SDK_NAME libunitree_legged_sdk_${ARCH}.so)
 set(EXTRA_LIBS ${LEGGED_SDK_NAME} lcm)
 
-add_executable(lcm_server /home/$ENV{USER}/Robot_SDK/unitree_legged_sdk/examples/lcm_server.cpp)
+add_executable(lcm_server ${ROBOT_SDK}/unitree_legged_sdk/examples/lcm_server.cpp)
 target_link_libraries(lcm_server ${EXTRA_LIBS} ${catkin_LIBRARIES})
 add_dependencies(lcm_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+add_executable(ros_server src/exe/ros_server_udp.cpp)
+#add_executable(ros_server src/exe/ros_server_lcm.cpp)
+target_link_libraries(ros_server ${EXTRA_LIBS} ${catkin_LIBRARIES})
+add_dependencies(ros_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 add_executable(position_lcm src/exe/position_mode.cpp)
 target_link_libraries(position_lcm ${EXTRA_LIBS} ${catkin_LIBRARIES})
