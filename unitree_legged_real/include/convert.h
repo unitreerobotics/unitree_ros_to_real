@@ -208,7 +208,7 @@ UNITREE_LEGGED_SDK::HighCmd ToLcm(unitree_legged_msgs::HighCmd& ros, UNITREE_LEG
     lcm.crc = ros.crc;
 
     for(int i(0); i<2; ++i){
-        lcm.postion[i] = ros.postion[i];
+        lcm.position[i] = ros.position[i];
         lcm.velocity[i] = ros.velocity[i];
     }
 
