@@ -22,7 +22,7 @@ uint8 gaitType                  # 0.idle  1.trot  2.trot running  3.climb stair
 uint8 speedLevel                # 0. default low speed. 1. medium speed 2. high speed. during walking, only respond MODE 3
 float32 footRaiseHeight         # (unit: m, default: 0.08m), foot up height while walking
 float32 bodyHeight              # (unit: m, default: 0.28m),
-float32[2] postion              # (unit: m), desired position in inertial frame
+float32[2] position             # (unit: m), desired position in inertial frame
 float32[3] euler                # (unit: rad), roll pitch yaw in stand mode
 float32[2] velocity             # (unit: m/s), forwardSpeed, sideSpeed in body frame
 float32 yawSpeed                # (unit: rad/s), rotateSpeed in body frame
