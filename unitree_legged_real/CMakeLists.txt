@@ -9,37 +9,47 @@ find_package(catkin REQUIRED COMPONENTS
     unitree_legged_msgs
 )
 
-catkin_package()
+message("-- CMAKE_SYSTEM_PROCESSOR: ${CMAKE_SYSTEM_PROCESSOR}")
+if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "x86_64.*")
+  set(ARCH amd64)
+else()
+  set(ARCH arm64)
+endif()
+set(LEGGED_SDK_NAME -pthread libunitree_legged_sdk_${ARCH}.so lcm)
+
+set(EXTRA_LIBS ${LEGGED_SDK_NAME} lcm)
+
+
+set(CMAKE_CXX_FLAGS "-O3 -fPIC")
+
+
 
 include_directories(
     include
-    ${Boost_INCLUDE_DIR}
     ${catkin_INCLUDE_DIRS}
+    ${CMAKE_SOURCE_DIR}/unitree_legged_sdk-master/include
 )
 
-set(CMAKE_CXX_FLAGS "-O3")
 
-include_directories(/home/$ENV{USER}/Robot_SDK/unitree_legged_sdk/include)
-link_directories(/home/$ENV{USER}/Robot_SDK/unitree_legged_sdk/lib)
-string(CONCAT LEGGED_SDK_NAME libunitree_legged_sdk_amd64.so)
-set(EXTRA_LIBS ${LEGGED_SDK_NAME} lcm)
 
-add_executable(lcm_server /home/$ENV{USER}/Robot_SDK/unitree_legged_sdk/examples/lcm_server.cpp)
-target_link_libraries(lcm_server ${EXTRA_LIBS} ${catkin_LIBRARIES})
-add_dependencies(lcm_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+link_directories(${CMAKE_SOURCE_DIR}/unitree_legged_sdk-master/lib)
 
-add_executable(position_lcm src/exe/position_mode.cpp)
-target_link_libraries(position_lcm ${EXTRA_LIBS} ${catkin_LIBRARIES})
-add_dependencies(position_lcm ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-add_executable(velocity_lcm src/exe/velocity_mode.cpp)
-target_link_libraries(velocity_lcm ${EXTRA_LIBS} ${catkin_LIBRARIES})
-add_dependencies(velocity_lcm ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-add_executable(torque_lcm src/exe/torque_mode.cpp)
-target_link_libraries(torque_lcm ${EXTRA_LIBS} ${catkin_LIBRARIES})
-add_dependencies(torque_lcm ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-add_executable(walk_lcm src/exe/walk_mode.cpp)
-target_link_libraries(walk_lcm ${EXTRA_LIBS} ${catkin_LIBRARIES})
-add_dependencies(walk_lcm ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_executable(example_walk src/exe/example_walk.cpp)
+target_link_libraries(example_walk ${EXTRA_LIBS} ${catkin_LIBRARIES})
+add_dependencies(example_walk ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+add_executable(example_position src/exe/example_position.cpp)
+target_link_libraries(example_position ${EXTRA_LIBS} ${catkin_LIBRARIES})
+add_dependencies(example_position ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+add_executable(state_sub src/exe/state_sub.cpp)
+target_link_libraries(state_sub ${EXTRA_LIBS} ${catkin_LIBRARIES})
+add_dependencies(state_sub ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+add_executable(ros_udp src/exe/ros_udp.cpp)
+target_link_libraries(ros_udp ${EXTRA_LIBS} ${catkin_LIBRARIES})
+add_dependencies(ros_udp ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
