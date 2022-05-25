@@ -76,8 +76,6 @@ int main(int argc, char **argv)
             low_cmd_ros.motorCmd[FR_1].Kd = 1.0;
         }
 
-        ros::spinOnce();
-
         count++;
         if (count > 10)
         {
@@ -87,6 +85,7 @@ int main(int argc, char **argv)
 
         pub.publish(low_cmd_ros);
 
+        ros::spinOnce();
         loop_rate.sleep();
     }
 

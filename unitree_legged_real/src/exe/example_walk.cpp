@@ -132,6 +132,7 @@ int main(int argc, char **argv)
 
         pub.publish(high_cmd_ros);
 
+        ros::spinOnce();
         loop_rate.sleep();
     }
 
