@@ -9,6 +9,8 @@ find_package(catkin REQUIRED COMPONENTS
     unitree_legged_msgs
 )
 
+catkin_package()
+
 message("-- CMAKE_SYSTEM_PROCESSOR: ${CMAKE_SYSTEM_PROCESSOR}")
 if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "x86_64.*")
   set(ARCH amd64)
