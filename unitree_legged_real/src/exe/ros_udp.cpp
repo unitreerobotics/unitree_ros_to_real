@@ -7,6 +7,7 @@
 #include "convert.h"
 #include <chrono>
 #include <pthread.h>
+#include <geometry_msgs/Twist.h>
 
 using namespace UNITREE_LEGGED_SDK;
 class Custom

@@ -1,0 +1,8 @@
+<launch>
+    
+
+    <node pkg="unitree_legged_real" type="twist_sub" name="node_twist_sub" output="screen"/>
+    <node pkg="unitree_legged_real" type="control_via_keyboard" name="node_control_via_keyboard" output="screen"/>
+
+    
+</launch>

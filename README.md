@@ -79,6 +79,11 @@ You can also run the node state_sub to subscribe the feedback information from G
 rosrun unitree_legged_real state_sub
 ```
 
+You can also run the launch file that enables you control robot via keyboard like you can do in turtlesim package
+```
+roslaunch unitree_legged_real keyboard_control.launch
+```
+
 And before you do the low-level control, please press L2+A to sit the robot down and then press L1+L2+start to make the robot into
 mode in which you can do joint-level control, finally make sure you hang the robot up before you run low-level control.
 
