@@ -21,6 +21,10 @@ set(LEGGED_SDK_NAME -pthread libunitree_legged_sdk_${ARCH}.so lcm)
 
 set(EXTRA_LIBS ${LEGGED_SDK_NAME} lcm)
 
+include(FindPkgConfig)
+pkg_check_modules(LCM lcm REQUIRED)
+include_directories(${LCM_INCLUDE_DIRS})
+link_directories(${LCM_LIBDIR})
 
 set(CMAKE_CXX_FLAGS "-O3 -fPIC")
 
