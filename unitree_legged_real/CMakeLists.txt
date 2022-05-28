@@ -34,6 +34,11 @@ endif()
 string(CONCAT LEGGED_SDK_NAME libunitree_legged_sdk_${ARCH}.so)
 set(EXTRA_LIBS ${LEGGED_SDK_NAME} lcm)
 
+include(FindPkgConfig)
+pkg_check_modules(LCM lcm REQUIRED)
+include_directories(${LCM_INCLUDE_DIRS})
+link_directories(${LCM_LIBDIR})
+
 add_executable(lcm_server ${ROBOT_SDK}/unitree_legged_sdk/examples/lcm_server.cpp)
 target_link_libraries(lcm_server ${EXTRA_LIBS} ${catkin_LIBRARIES})
 add_dependencies(lcm_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
