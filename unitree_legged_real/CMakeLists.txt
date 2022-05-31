@@ -22,7 +22,7 @@ set(LEGGED_SDK_NAME -pthread libunitree_legged_sdk_${ARCH}.so lcm)
 set(EXTRA_LIBS ${LEGGED_SDK_NAME} lcm)
 
 
-set(CMAKE_CXX_FLAGS "-O3 -fPIC")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fPIC")
 
 
 
