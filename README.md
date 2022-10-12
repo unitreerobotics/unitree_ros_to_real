@@ -17,7 +17,7 @@ We recommand users to run this package in Ubuntu 18.04 and ROS melodic environme
 ## Dependencies
 * [unitree_legged_sdk](https://github.com/unitreerobotics/unitree_legged_sdk/releases)
 ### Notice
-The newest release [v3.8.0](https://github.com/unitreerobotics/unitree_legged_sdk/releases/tag/3.8.0) only supports for robot: Go1
+The newest release [v3.8.0](https://github.com/unitreerobotics/unitree_legged_sdk/releases/tag/3.8.0) only supports for robot: Go1.
 
 Check release [v3.3.4](https://github.com/unitreerobotics/unitree_legged_sdk/releases/tag/3.3.4) for A1 support.
 
