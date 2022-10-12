@@ -15,6 +15,7 @@ add_message_files(
   BmsCmd.msg
   BmsState.msg
   Cartesian.msg
+  EeForce.msg
   IMU.msg
   LED.msg
   LowCmd.msg
