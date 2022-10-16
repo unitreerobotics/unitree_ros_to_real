@@ -3,7 +3,7 @@ Packages Version: v3.5.0
 # Introduction
 This package can send control command to real robot from ROS. You can do low-level control(namely control all joints on robot) and high-level control(namely control the walking direction and speed of robot).
 
-This version is suitable for unitree_legged_sdk v3.5.1, namely Go1 robot. 
+This version is suitable for unitree_legged_sdk v3.5.1, namely Go1 robot.
 
 ## Packages:
 
@@ -14,11 +14,15 @@ The interface between ROS and real robot: `unitree_legged_real`
 ## Environment
 We recommand users to run this package in Ubuntu 18.04 and ROS melodic environment
 
-# Dependencies
-* [unitree_legged_sdk](https://github.com/unitreerobotics): v3.5.1
+## Dependencies
+* [unitree_legged_sdk](https://github.com/unitreerobotics/unitree_legged_sdk/releases)
+### Notice
+The newest release [v3.8.0](https://github.com/unitreerobotics/unitree_legged_sdk/releases/tag/3.8.0) only supports for robot: Go1.
+
+Check release [v3.3.4](https://github.com/unitreerobotics/unitree_legged_sdk/releases/tag/3.3.4) for A1 support.
 
 # Configuration
-Before compiling this package, users have to download unitree_legged-sdk v.3.5.1 to `~/catkin_ws/src` folder, which is the same folder where you put this package into
+Before compiling this package, please download the corresponding unitree_legged_sdk as noted above, and put it to your own workspace's source folder(e.g. `~/catkin_ws/src`). Be careful with the sdk folder name. It should be "unitree_legged_sdk" without version tag.
 
 # Build
 You can use catkin_make to build ROS packages. First copy the package folder to `~/catkin_ws/src`, then:
@@ -86,8 +90,3 @@ roslaunch unitree_legged_real keyboard_control.launch
 
 And before you do the low-level control, please press L2+A to sit the robot down and then press L1+L2+start to make the robot into
 mode in which you can do joint-level control, finally make sure you hang the robot up before you run low-level control.
-
-
-
-
-
