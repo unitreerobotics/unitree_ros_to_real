@@ -1,4 +1,4 @@
-Packages Version: v3.8.0
+Packages Version: v3.5.1
 
 # Introduction
 This package can send control command to real robot from ROS. You can do low-level control(namely control all joints on robot) and high-level control(namely control the walking direction and speed of robot).
@@ -15,11 +15,10 @@ The interface between ROS and real robot: `unitree_legged_real`
 We recommand users to run this package in Ubuntu 18.04 and ROS melodic environment
 
 ## Dependencies
-* [unitree_legged_sdk](https://github.com/unitreerobotics/unitree_legged_sdk/releases)
+* [unitree_legged_sdk](https://github.com/unitreerobotics/unitree_legged_sdk/releases/tag/v3.5.1)
 ### Notice
-The newest release [v3.8.0](https://github.com/unitreerobotics/unitree_legged_sdk/releases/tag/3.8.0) only supports for robot: Go1.
-
-Check release [v3.3.4](https://github.com/unitreerobotics/unitree_legged_sdk/releases/tag/3.3.4) for A1 support.
+The release [v3.5.1](https://github.com/unitreerobotics/unitree_legged_sdk/releases/tag/v3.5.1) only supports for robot: Go1.
+There is a typo on line 189 at "\unitree_legged_sdk-3.5.1\include\unitree_legged_sdk\comm.h". Change "postion" to "position" will work.
 
 # Configuration
 Before compiling this package, please download the corresponding unitree_legged_sdk as noted above, and put it to your own workspace's source folder(e.g. `~/catkin_ws/src`). Be careful with the sdk folder name. It should be "unitree_legged_sdk" without version tag.
