@@ -22,7 +22,7 @@ link_directories(${CMAKE_SOURCE_DIR}/unitree_legged_sdk/lib/cpp/${ARCH})
 
 set(EXTRA_LIBS -pthread libunitree_legged_sdk.so)
 
-set(CMAKE_CXX_FLAGS "-O3 -fPIC")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fPIC")
 
 include_directories(
     include
