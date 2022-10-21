@@ -17,14 +17,12 @@ if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "x86_64.*")
 else()
   set(ARCH arm64)
 endif()
-set(LEGGED_SDK_NAME -pthread libunitree_legged_sdk_${ARCH}.so lcm)
 
-set(EXTRA_LIBS ${LEGGED_SDK_NAME} lcm)
+link_directories(${CMAKE_SOURCE_DIR}/unitree_legged_sdk/lib/cpp/${ARCH})
 
+set(EXTRA_LIBS -pthread libunitree_legged_sdk.so)
 
 set(CMAKE_CXX_FLAGS "-O3 -fPIC")
-
-
 
 include_directories(
     include
@@ -34,7 +32,7 @@ include_directories(
 
 
 
-link_directories(${CMAKE_SOURCE_DIR}/unitree_legged_sdk/lib)
+
 
 
 
@@ -62,3 +60,4 @@ add_dependencies(control_via_keyboard ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catk
 add_executable(twist_sub src/exe/twist_sub.cpp)
 target_link_libraries(twist_sub ${EXTRA_LIBS} ${catkin_LIBRARIES})
 add_dependencies(twist_sub ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
