@@ -14,7 +14,7 @@ The interface between ROS and real robot: `unitree_legged_real`
 ## Environment
 We recommand users to run this package in Ubuntu 20.04 and ROS neotic environment
 
-## s
+## Dependency
 * [unitree_legged_sdk](https://github.com/unitreerobotics/unitree_legged_sdk/releases)
 ### Notice
 The release [v3.8.3](https://github.com/unitreerobotics/unitree_legged_sdk/releases/tag/v3.8.3) only supports for robot: B1.
