@@ -6,6 +6,15 @@
 
 using namespace UNITREE_LEGGED_SDK;
 
+unitree_legged_msgs::HighState high_state_ros;
+
+void highStateCallback(const unitree_legged_msgs::HighState::ConstPtr &state)
+{
+    static long count = 0;
+    ROS_INFO("highStateCallback %ld", count++);
+    high_state_ros = *state;
+}
+
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "example_walk_without_lcm");
@@ -24,9 +33,11 @@ int main(int argc, char **argv)
     unitree_legged_msgs::HighCmd high_cmd_ros;
 
     ros::Publisher pub = nh.advertise<unitree_legged_msgs::HighCmd>("high_cmd", 1000);
+    ros::Subscriber sub = nh.subscribe("high_state", 1000, highStateCallback);
 
     while (ros::ok())
     {
+        printf("rpy: %f %f %f\n", high_state_ros.imu.rpy[0], high_state_ros.imu.rpy[1], high_state_ros.imu.rpy[2]);
 
         motiontime += 2;
 
@@ -46,88 +57,76 @@ int main(int argc, char **argv)
         high_cmd_ros.yawSpeed = 0.0f;
         high_cmd_ros.reserve = 0;
 
-        if (motiontime > 0 && motiontime < 1000)
+        if (motiontime > 0 && motiontime < 2000)
+        {
+            high_cmd_ros.mode = 6;
+        }
+        else if(motiontime >= 2000 && motiontime < 3000)
         {
             high_cmd_ros.mode = 1;
-            high_cmd_ros.euler[0] = -0.3;
         }
-        if (motiontime > 1000 && motiontime < 2000)
+        else if(motiontime >= 3000 && motiontime < 4000)
         {
             high_cmd_ros.mode = 1;
             high_cmd_ros.euler[0] = 0.3;
         }
-        if (motiontime > 2000 && motiontime < 3000)
+        else if(motiontime >= 4000 && motiontime < 6000)
         {
             high_cmd_ros.mode = 1;
-            high_cmd_ros.euler[1] = -0.2;
+            high_cmd_ros.euler[0] = -0.3;
         }
-        if (motiontime > 3000 && motiontime < 4000)
+        else if(motiontime >= 6000 && motiontime < 8000)
         {
             high_cmd_ros.mode = 1;
-            high_cmd_ros.euler[1] = 0.2;
+            high_cmd_ros.euler[1] = 0.3;
         }
-        if (motiontime > 4000 && motiontime < 5000)
+        else if(motiontime >= 8000 && motiontime < 10000)
         {
             high_cmd_ros.mode = 1;
-            high_cmd_ros.euler[2] = -0.2;
+            high_cmd_ros.euler[1] = -0.3;
         }
-        if (motiontime > 5000 && motiontime < 6000)
+        else if(motiontime >= 10000 && motiontime < 12000)
         {
             high_cmd_ros.mode = 1;
-            high_cmd_ros.euler[2] = 0.2;
+            high_cmd_ros.euler[2] = 0.3;
         }
-        if (motiontime > 6000 && motiontime < 7000)
+        else if(motiontime >= 12000 && motiontime < 14000)
         {
             high_cmd_ros.mode = 1;
-            high_cmd_ros.bodyHeight = -0.2;
+            high_cmd_ros.euler[2] = -0.3;
         }
-        if (motiontime > 7000 && motiontime < 8000)
+        else if(motiontime >= 14000 && motiontime < 15000)
         {
             high_cmd_ros.mode = 1;
-            high_cmd_ros.bodyHeight = 0.1;
         }
-        if (motiontime > 8000 && motiontime < 9000)
-        {
-            high_cmd_ros.mode = 1;
-            high_cmd_ros.bodyHeight = 0.0;
-        }
-        if (motiontime > 9000 && motiontime < 11000)
-        {
-            high_cmd_ros.mode = 5;
-        }
-        if (motiontime > 11000 && motiontime < 13000)
-        {
-            high_cmd_ros.mode = 6;
-        }
-        if (motiontime > 13000 && motiontime < 14000)
-        {
-            high_cmd_ros.mode = 0;
-        }
-        if (motiontime > 14000 && motiontime < 18000)
+        else if(motiontime >= 15000 && motiontime < 18000)
         {
             high_cmd_ros.mode = 2;
-            high_cmd_ros.gaitType = 2;
-            high_cmd_ros.velocity[0] = 0.4f; // -1  ~ +1
-            high_cmd_ros.yawSpeed = 2;
-            high_cmd_ros.footRaiseHeight = 0.1;
-            // printf("walk\n");
+            high_cmd_ros.velocity[0] = 0.3;
+            high_cmd_ros.yawSpeed = 0.2;
         }
-        if (motiontime > 18000 && motiontime < 20000)
-        {
-            high_cmd_ros.mode = 0;
-            high_cmd_ros.velocity[0] = 0;
-        }
-        if (motiontime > 20000 && motiontime < 24000)
+        else if(motiontime >= 18000 && motiontime < 21000)
         {
             high_cmd_ros.mode = 2;
-            high_cmd_ros.gaitType = 1;
-            high_cmd_ros.velocity[0] = 0.2f; // -1  ~ +1
-            high_cmd_ros.bodyHeight = 0.1;
-            // printf("walk\n");
+            high_cmd_ros.velocity[1] = -0.3;
+            high_cmd_ros.yawSpeed = -0.2;
         }
-        if (motiontime > 24000)
+        else if(motiontime >= 21000 && motiontime < 22000)
         {
             high_cmd_ros.mode = 1;
+        }
+        else if(motiontime >= 22000 && motiontime < 25000)
+        {
+            high_cmd_ros.mode = 2;
+            high_cmd_ros.gaitType = 3;
+        }
+        else if(motiontime >= 25000 && motiontime < 26000)
+        {
+            high_cmd_ros.mode = 1;
+        }
+        else 
+        {
+            high_cmd_ros.mode = 0;
         }
 
         pub.publish(high_cmd_ros);

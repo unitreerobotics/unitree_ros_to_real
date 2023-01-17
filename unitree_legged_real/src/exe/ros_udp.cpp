@@ -27,7 +27,7 @@ public:
         : 
         // low_udp(LOWLEVEL),
         low_udp(LOWLEVEL, 8091, "192.168.123.10", 8007),
-        high_udp(8090, "192.168.123.161", 8082, sizeof(HighCmd), sizeof(HighState))
+        high_udp(8090, "192.168.123.220", 8082, sizeof(HighCmd), sizeof(HighState))
     {
         high_udp.InitCmdData(high_cmd);
         low_udp.InitCmdData(low_cmd);
@@ -77,9 +77,9 @@ long low_count = 0;
 
 void highCmdCallback(const unitree_legged_msgs::HighCmd::ConstPtr &msg)
 {
-    printf("highCmdCallback is running !\t%ld\n", ::high_count);
+    printf("highCmdCallback is running !\t%ld\n", ::high_count++);
 
-    custom.high_cmd = rosMsg2Cmd(msg);
+    custom.high_cmd = rosMsg2Cmd(*msg);
 
     unitree_legged_msgs::HighState high_state_ros;
 
@@ -87,15 +87,15 @@ void highCmdCallback(const unitree_legged_msgs::HighCmd::ConstPtr &msg)
 
     pub_high.publish(high_state_ros);
 
-    printf("highCmdCallback ending !\t%ld\n\n", ::high_count++);
+    // printf("highCmdCallback ending !\t%ld\n\n", ::high_count++);
 }
 
 void lowCmdCallback(const unitree_legged_msgs::LowCmd::ConstPtr &msg)
 {
 
-    printf("lowCmdCallback is running !\t%ld\n", low_count);
+    printf("lowCmdCallback is running !\t%ld\n", ::low_count++);
 
-    custom.low_cmd = rosMsg2Cmd(msg);
+    custom.low_cmd = rosMsg2Cmd(*msg);
 
     unitree_legged_msgs::LowState low_state_ros;
 
@@ -103,7 +103,7 @@ void lowCmdCallback(const unitree_legged_msgs::LowCmd::ConstPtr &msg)
 
     pub_low.publish(low_state_ros);
 
-    printf("lowCmdCallback ending!\t%ld\n\n", ::low_count++);
+    // printf("lowCmdCallback ending!\t%ld\n\n", ::low_count++);
 }
 
 int main(int argc, char **argv)
@@ -123,6 +123,8 @@ int main(int argc, char **argv)
         loop_udpSend.start();
         loop_udpRecv.start();
 
+        printf("LOWLEVEL is initialized\n");
+
         ros::spin();
 
         // printf("low level runing!\n");
@@ -137,6 +139,8 @@ int main(int argc, char **argv)
 
         loop_udpSend.start();
         loop_udpRecv.start();
+
+        printf("HIGHLEVEL is initialized\n");
 
         ros::spin();
 

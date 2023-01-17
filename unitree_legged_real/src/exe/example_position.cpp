@@ -6,6 +6,18 @@
 
 using namespace UNITREE_LEGGED_SDK;
 
+unitree_legged_msgs::LowState low_state_ros;
+
+void lowStateCallback(const unitree_legged_msgs::LowState::ConstPtr &state)
+{
+    static long count = 0;
+    ROS_INFO("lowStateCallback %ld", count++);
+
+    low_state_ros = *state;
+}
+
+
+
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "example_postition_without_lcm");
@@ -29,16 +41,17 @@ int main(int argc, char **argv)
 
     unitree_legged_msgs::LowCmd low_cmd_ros;
 
-    bool initiated_flag = false; // initiate need time
-    int count = 0;
+    // bool initiated_flag = false; // initiate need time
+    // int count = 0;
 
     ros::Publisher pub = nh.advertise<unitree_legged_msgs::LowCmd>("low_cmd", 1);
+    ros::Subscriber sub = nh.subscribe("low_state", 1, lowStateCallback);
 
     low_cmd_ros.head[0] = 0xFE;
     low_cmd_ros.head[1] = 0xEF;
     low_cmd_ros.levelFlag = LOWLEVEL;
 
-    for (int i = 0; i < 12; i++)
+    for (std::size_t i = 0; i < 20; i++)
     {
         low_cmd_ros.motorCmd[i].mode = 0x0A;  // motor switch to servo (PMSM) mode
         low_cmd_ros.motorCmd[i].q = PosStopF; // 禁止位置环
@@ -51,37 +64,60 @@ int main(int argc, char **argv)
     while (ros::ok())
     {
 
-        if (initiated_flag == true)
+        printf("FR_joint_pos: %f %f %f\n", low_state_ros.motorState[FR_0].q, low_state_ros.motorState[FR_1].q, low_state_ros.motorState[FR_2].q);
+
+        
+        motiontime += 2;
+
+        if(motiontime >= 0 && motiontime <= 10)
         {
-            motiontime += 2;
+            qInit[0] = low_state_ros.motorState[FR_0].q;
+            qInit[1] = low_state_ros.motorState[FR_1].q;
+            qInit[2] = low_state_ros.motorState[FR_2].q;
+        }
+        else if(motiontime > 10 && motiontime < 1000)
+        {
+            Kp[0] = 20.0;
+            Kp[1] = 20.0;
+            Kp[2] = 20.0;
+            Kd[0] = 2.0;
+            Kd[1] = 2.0;
+            Kd[2] = 2.0;
 
-            low_cmd_ros.motorCmd[FR_0].tau = -0.65f;
-            low_cmd_ros.motorCmd[FL_0].tau = +0.65f;
-            low_cmd_ros.motorCmd[RR_0].tau = -0.65f;
-            low_cmd_ros.motorCmd[RL_0].tau = +0.65f;
+            const float interval = 800.0; 
 
-            low_cmd_ros.motorCmd[FR_2].q = -M_PI / 2 + 0.5 * sin(2 * M_PI / 5.0 * motiontime * 1e-3);
-            low_cmd_ros.motorCmd[FR_2].dq = 0.0;
-            low_cmd_ros.motorCmd[FR_2].Kp = 5.0;
-            low_cmd_ros.motorCmd[FR_2].Kd = 1.0;
+            qDes[0] = (1 - (motiontime - 10) / interval) * qInit[0] + (motiontime - 10) / interval * sin_mid_q[0];
+            qDes[1] = (1 - (motiontime - 10) / interval) * qInit[1] + (motiontime - 10) / interval * sin_mid_q[1];
+            qDes[2] = (1 - (motiontime - 10) / interval) * qInit[2] + (motiontime - 10) / interval * sin_mid_q[2];
+        }
+        else if(motiontime >= 1000)
+        {
+            float period = 5.0;
 
-            low_cmd_ros.motorCmd[FR_0].q = 0.0;
-            low_cmd_ros.motorCmd[FR_0].dq = 0.0;
-            low_cmd_ros.motorCmd[FR_0].Kp = 5.0;
-            low_cmd_ros.motorCmd[FR_0].Kd = 1.0;
+            qDes[0] = sin_mid_q[0];
+            qDes[1] = sin_mid_q[1] + 0.6 * std::sin(2 * M_PI / period * (motiontime - 400) / 1000.0); 
+            qDes[2] = sin_mid_q[2] + (-0.9) * std::sin(2 * M_PI / period * (motiontime - 400) / 1000.0); 
 
-            low_cmd_ros.motorCmd[FR_1].q = 0.0;
-            low_cmd_ros.motorCmd[FR_1].dq = 0.0;
-            low_cmd_ros.motorCmd[FR_1].Kp = 5.0;
-            low_cmd_ros.motorCmd[FR_1].Kd = 1.0;
         }
 
-        count++;
-        if (count > 10)
-        {
-            count = 10;
-            initiated_flag = true;
-        }
+        low_cmd_ros.motorCmd[FR_0].tau = -4.0;
+        low_cmd_ros.motorCmd[FR_0].Kp = Kp[0];
+        low_cmd_ros.motorCmd[FR_0].Kd = Kd[0];
+        low_cmd_ros.motorCmd[FR_0].q = qDes[0];
+        low_cmd_ros.motorCmd[FR_0].dq = 0.0;
+
+        low_cmd_ros.motorCmd[FR_1].tau = 0.0;
+        low_cmd_ros.motorCmd[FR_1].Kp = Kp[1];
+        low_cmd_ros.motorCmd[FR_1].Kd = Kd[1];
+        low_cmd_ros.motorCmd[FR_1].q = qDes[1];
+        low_cmd_ros.motorCmd[FR_1].dq = 0.0;
+
+        low_cmd_ros.motorCmd[FR_2].tau = 0.0;
+        low_cmd_ros.motorCmd[FR_2].Kp = Kp[2];
+        low_cmd_ros.motorCmd[FR_2].Kd = Kd[2];
+        low_cmd_ros.motorCmd[FR_2].q = qDes[2];
+        low_cmd_ros.motorCmd[FR_2].dq = 0.0;
+        
 
         pub.publish(low_cmd_ros);
 
