@@ -75,7 +75,7 @@ int main(int argc, char **argv)
             qInit[1] = low_state_ros.motorState[FR_1].q;
             qInit[2] = low_state_ros.motorState[FR_2].q;
         }
-        else if(motiontime > 10 && motiontime < 1000)
+        else if(motiontime > 10 && motiontime < 2500)
         {
             Kp[0] = 20.0;
             Kp[1] = 20.0;
@@ -84,19 +84,20 @@ int main(int argc, char **argv)
             Kd[1] = 2.0;
             Kd[2] = 2.0;
 
-            const float interval = 800.0; 
+            const float interval = 2000.0; 
+            float phase = std::min(std::max((motiontime - 10) / interval, 0.0f), 1.0f);
 
-            qDes[0] = (1 - (motiontime - 10) / interval) * qInit[0] + (motiontime - 10) / interval * sin_mid_q[0];
-            qDes[1] = (1 - (motiontime - 10) / interval) * qInit[1] + (motiontime - 10) / interval * sin_mid_q[1];
-            qDes[2] = (1 - (motiontime - 10) / interval) * qInit[2] + (motiontime - 10) / interval * sin_mid_q[2];
+            qDes[0] = (1 - phase) * qInit[0] + phase * sin_mid_q[0];
+            qDes[1] = (1 - phase) * qInit[1] + phase * sin_mid_q[1];
+            qDes[2] = (1 - phase) * qInit[2] + phase * sin_mid_q[2];
         }
-        else if(motiontime >= 1000)
+        else if(motiontime >= 2500)
         {
             float period = 5.0;
 
             qDes[0] = sin_mid_q[0];
-            qDes[1] = sin_mid_q[1] + 0.6 * std::sin(2 * M_PI / period * (motiontime - 400) / 1000.0); 
-            qDes[2] = sin_mid_q[2] + (-0.9) * std::sin(2 * M_PI / period * (motiontime - 400) / 1000.0); 
+            qDes[1] = sin_mid_q[1] + 0.6 * std::sin(2 * M_PI / period * (motiontime - 2500) / 1000.0); 
+            qDes[2] = sin_mid_q[2] + (-0.9) * std::sin(2 * M_PI / period * (motiontime - 2500) / 1000.0); 
 
         }
 
