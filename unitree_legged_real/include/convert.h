@@ -6,8 +6,6 @@ Use of this source code is governed by the MPL-2.0 license, see LICENSE.
 #ifndef _CONVERT_H_
 #define _CONVERT_H_
 
-#include "unitree_legged_msgs/BmsCmd.h"
-#include "unitree_legged_msgs/BmsState.h"
 #include "unitree_legged_msgs/Cartesian.h"
 #include "unitree_legged_msgs/HighCmd.h"
 #include "unitree_legged_msgs/HighState.h"
@@ -21,42 +19,6 @@ Use of this source code is governed by the MPL-2.0 license, see LICENSE.
 #include "unitree_legged_sdk/unitree_legged_sdk.h"
 #include "ros/ros.h"
 
-UNITREE_LEGGED_SDK::BmsCmd rosMsg2Cmd(const unitree_legged_msgs::BmsCmd &msg)
-{
-    UNITREE_LEGGED_SDK::BmsCmd cmd;
-
-    cmd.off = msg.off;
-
-    for (std::size_t i(0); i < 3; i++)
-        cmd.reserve[i] = msg.reserve[i];
-    
-
-    return cmd;
-}
-
-unitree_legged_msgs::BmsState state2rosMsg(UNITREE_LEGGED_SDK::BmsState &state)
-{
-    unitree_legged_msgs::BmsState ros_msg;
-
-    for (std::size_t i(0); i < 8; i++)
-    {
-        ros_msg.BQ_NTC[i] = state.BQ_NTC[i];
-        ros_msg.MCU_NTC[i] = state.MCU_NTC[i];
-    }
-
-    for (std::size_t i(0); i < 30; i++)
-        ros_msg.cell_vol[i] = state.cell_vol[i];
-    
-
-    ros_msg.version_h = state.version_h;
-    ros_msg.version_l = state.version_l;
-    ros_msg.bms_status = state.bms_status;
-    ros_msg.SOC = state.SOC;
-    ros_msg.current = state.current;
-    ros_msg.cycle = state.cycle;
-
-    return ros_msg;
-}
 
 unitree_legged_msgs::Cartesian state2rosMsg(UNITREE_LEGGED_SDK::Cartesian &state)
 {
@@ -73,12 +35,10 @@ unitree_legged_msgs::IMU state2rosMsg(UNITREE_LEGGED_SDK::IMU &state)
 {
     unitree_legged_msgs::IMU ros_msg;
 
-    for (std::size_t i(0); i < 4; i++)
-    {
+    for (std::size_t i(0); i < 4; ++i)
         ros_msg.quaternion[i] = state.quaternion[i];
-    }
-
-    for (std::size_t i(0); i < 3; i++)
+    
+    for (std::size_t i(0); i < 3; ++i)
     {
         ros_msg.gyroscope[i] = state.gyroscope[i];
         ros_msg.accelerometer[i] = state.accelerometer[i];
@@ -111,10 +71,9 @@ UNITREE_LEGGED_SDK::MotorCmd rosMsg2Cmd(const unitree_legged_msgs::MotorCmd &msg
     cmd.Kp = msg.Kp;
     cmd.Kd = msg.Kd;
 
-    for (std::size_t i(0); i < 3; i++)
-    {
+    for (std::size_t i(0); i < 3; ++i)
         cmd.reserve[i] = msg.reserve[i];
-    }
+    
 
     return cmd;
 }
@@ -144,42 +103,37 @@ UNITREE_LEGGED_SDK::HighCmd rosMsg2Cmd(const unitree_legged_msgs::HighCmd &msg)
 {
     UNITREE_LEGGED_SDK::HighCmd cmd;
 
-    for (std::size_t i(0); i < 2; i++)
-    {
-        cmd.head[i] = msg.head[i];
-        cmd.SN[i] = msg.SN[i];
-        cmd.version[i] = msg.version[i];
-        cmd.position[i] = msg.position[i];
-        cmd.velocity[i] = msg.velocity[i];
-        cmd.dComXy[i] = msg.dComXy[i];
-        cmd.dstandFootXy[i] = msg.dstandFootXy[i];
-    }
-
-    for (std::size_t i(0); i < 3; i++)
-        cmd.euler[i] = msg.euler[i];
-    
-
-    for (std::size_t i(0); i < 4; i++)
-        cmd.led[i] = rosMsg2Cmd(msg.led[i]);
-    
-
-    for (std::size_t i(0); i < 40; i++)
-        cmd.wirelessRemote[i] = msg.wirelessRemote[i];
-    
-
     cmd.levelFlag = msg.levelFlag;
-    cmd.frameReserve = msg.frameReserve;
+    cmd.commVersion = msg.commVersion;
+    cmd.robotID = msg.robotID;
+    cmd.SN = msg.SN;
     cmd.bandWidth = msg.bandWidth;
     cmd.mode = msg.mode;
     cmd.gaitType = msg.gaitType;
     cmd.speedLevel = msg.speedLevel;
-    cmd.footRaiseHeight = msg.footRaiseHeight;
-    cmd.bodyHeight = msg.bodyHeight;
+    cmd.dFootRaiseHeight = msg.dFootRaiseHeight;
+    cmd.dBodyHeight = msg.dBodyHeight;
+
+    for (std::size_t i(0); i < 2; ++i)
+    {
+        cmd.position[i] = msg.position[i];
+        cmd.velocity[i] = msg.velocity[i];
+    }
+
+    for (std::size_t i(0); i < 3; ++i)
+        cmd.rpy[i] = msg.rpy[i];
+
     cmd.yawSpeed = msg.yawSpeed;
+    
+    for (std::size_t i(0); i < 4; ++i)
+        cmd.led[i] = rosMsg2Cmd(msg.led[i]);
+    
+
+    for (std::size_t i(0); i < 40; ++i)
+        cmd.wirelessRemote[i] = msg.wirelessRemote[i];
+    
     cmd.reserve = msg.reserve;
     cmd.crc = msg.crc;
-
-    cmd.bms = rosMsg2Cmd(msg.bms);
 
     return cmd;
 }
@@ -188,53 +142,35 @@ unitree_legged_msgs::HighState state2rosMsg(UNITREE_LEGGED_SDK::HighState &state
 {
     unitree_legged_msgs::HighState ros_msg;
 
-    for (std::size_t i(0); i < 2; i++)
-    {
-        ros_msg.head[i] = state.head[i];
-        ros_msg.SN[i] = state.SN[i];
-        ros_msg.version[i] = state.version[i];
-    }
+    ros_msg.levelFlag = state.levelFlag;
+    ros_msg.commVersion = state.commVersion;
+    ros_msg.robotID = state.robotID;
+    ros_msg.SN = state.SN;
+    ros_msg.bandWidth = state.bandWidth;
+    ros_msg.mode = state.mode;
+    ros_msg.imu = state2rosMsg(state.imu);
 
-    for (std::size_t i(0); i < 4; i++)
-    {
-        ros_msg.footForce[i] = state.footForce[i];
-        ros_msg.footForceEst[i] = state.footForceEst[i];
-        ros_msg.rangeObstacle[i] = state.rangeObstacle[i];
-        ros_msg.footPosition2Body[i] = state2rosMsg(state.footPosition2Body[i]);
-        ros_msg.footSpeed2Body[i] = state2rosMsg(state.footSpeed2Body[i]);
-    }
-
-    for (std::size_t i(0); i < 3; i++)
+    for(std::size_t i(0); i < 3; ++i)
     {
         ros_msg.position[i] = state.position[i];
         ros_msg.velocity[i] = state.velocity[i];
     }
 
-    for (std::size_t i(0); i < 40; i++)
-    {
-        ros_msg.wirelessRemote[i] = state.wirelessRemote[i];
-    }
-
-    for (std::size_t i(0); i < 20; i++)
-    {
-        ros_msg.motorState[i] = state2rosMsg(state.motorState[i]);
-    }
-
-    ros_msg.imu = state2rosMsg(state.imu);
-
-    ros_msg.bms = state2rosMsg(state.bms);
-
-    ros_msg.levelFlag = state.levelFlag;
-    ros_msg.frameReserve = state.frameReserve;
-    ros_msg.bandWidth = state.bandWidth;
-    ros_msg.mode = state.mode;
-    ros_msg.progress = state.progress;
-    ros_msg.gaitType = state.gaitType;
-    ros_msg.footRaiseHeight = state.footRaiseHeight;
-    ros_msg.bodyHeight = state.bodyHeight;
     ros_msg.yawSpeed = state.yawSpeed;
+
+    for(std::size_t i(0); i < 4; ++i)
+    {
+        ros_msg.footPosition2Body[i] = state2rosMsg(state.footPosition2Body[i]);
+        ros_msg.footSpeed2Body[i] = state2rosMsg(state.footSpeed2Body[i]);
+        ros_msg.footForce[i] = state.footForce[i];
+    }
+
+    for (std::size_t i(0); i < 40; ++i)
+        ros_msg.wirelessRemote[i] = state.wirelessRemote[i];
+    
     ros_msg.reserve = state.reserve;
     ros_msg.crc = state.crc;
+    
 
     return ros_msg;
 }
@@ -243,36 +179,30 @@ unitree_legged_msgs::LowState state2rosMsg(UNITREE_LEGGED_SDK::LowState &state)
 {
     unitree_legged_msgs::LowState ros_msg;
 
-    for (std::size_t i(0); i < 2; i++)
-    {
-        ros_msg.head[i] = state.head[i];
-        ros_msg.SN[i] = state.SN[i];
-        ros_msg.version[i] = state.version[i];
-    }
+    ros_msg.levelFlag = state.levelFlag;
+    ros_msg.commVersion = state.commVersion;
+    ros_msg.robotID = state.robotID;
+    ros_msg.SN = state.SN;
+    ros_msg.bandWidth = state.bandWidth;
+    ros_msg.imu = state2rosMsg(state.imu);
 
-    for (std::size_t i(0); i < 4; i++)
+    for (std::size_t i(0); i < 20; ++i)
+        ros_msg.motorState[i] = state2rosMsg(state.motorState[i]);
+
+    for (std::size_t i(0); i < 4; ++i)
     {
         ros_msg.footForce[i] = state.footForce[i];
         ros_msg.footForceEst[i] = state.footForceEst[i];
     }
-
-    for (std::size_t i(0); i < 40; i++)
-    {
-        ros_msg.wirelessRemote[i] = state.wirelessRemote[i];
-    }
-
-    for (std::size_t i(0); i < 20; i++)
-    {
-        ros_msg.motorState[i] = state2rosMsg(state.motorState[i]);
-    }
-
-    ros_msg.imu = state2rosMsg(state.imu);
-
-    ros_msg.bms = state2rosMsg(state.bms);
-
+    
     ros_msg.tick = state.tick;
+
+    for (std::size_t i(0); i < 40; ++i)
+        ros_msg.wirelessRemote[i] = state.wirelessRemote[i];
+
     ros_msg.reserve = state.reserve;
     ros_msg.crc = state.crc;
+
 
     return ros_msg;
 }
@@ -282,28 +212,22 @@ UNITREE_LEGGED_SDK::LowCmd rosMsg2Cmd(const unitree_legged_msgs::LowCmd &msg)
 {
     UNITREE_LEGGED_SDK::LowCmd cmd;
 
-    for (std::size_t i(0); i < 2; i++)
-    {
-        cmd.head[i] = msg.head[i];
-        cmd.SN[i] = msg.SN[i];
-        cmd.version[i] = msg.version[i];
-    }
-
-    for (std::size_t i(0); i < 40; i++)
-    {
-        cmd.wirelessRemote[i] = msg.wirelessRemote[i];
-    }
-
-    for (std::size_t i(0); i < 20; i++)
-    {
-        cmd.motorCmd[i] = rosMsg2Cmd(msg.motorCmd[i]);
-    }
-
-    cmd.bms = rosMsg2Cmd(msg.bms);
-
     cmd.levelFlag = msg.levelFlag;
-    cmd.frameReserve = msg.frameReserve;
+    cmd.commVersion = msg.commVersion;
+    cmd.robotID = msg.robotID;
+    cmd.SN = msg.SN;
     cmd.bandWidth = msg.bandWidth;
+
+    for (std::size_t i(0); i < 20; ++i)
+        cmd.motorCmd[i] = rosMsg2Cmd(msg.motorCmd[i]);
+    
+
+    for(std::size_t i(0); i < 4; ++i)
+        cmd.led[i] = rosMsg2Cmd(msg.led[i]);
+
+    for (std::size_t i(0); i < 40; ++i)
+        cmd.wirelessRemote[i] = msg.wirelessRemote[i];
+
     cmd.reserve = msg.reserve;
     cmd.crc = msg.crc;
 

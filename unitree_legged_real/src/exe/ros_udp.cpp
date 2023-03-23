@@ -10,6 +10,10 @@
 #include <geometry_msgs/Twist.h>
 
 using namespace UNITREE_LEGGED_SDK;
+
+const int LOW_CMD_LENGTH = 610;
+const int LOW_STATE_LENGTH = 771;
+
 class Custom
 {
 public:
@@ -26,8 +30,8 @@ public:
     Custom()
         : 
         // low_udp(LOWLEVEL),
-        low_udp(LOWLEVEL, 8091, "192.168.123.10", 8007),
-        high_udp(8090, "192.168.123.220", 8082, sizeof(HighCmd), sizeof(HighState))
+        low_udp(8082, "192.168.123.10", 8007, LOW_CMD_LENGTH, LOW_STATE_LENGTH),
+        high_udp(8081, "192.168.123.220", 8082, sizeof(HighCmd), sizeof(HighState))
     {
         high_udp.InitCmdData(high_cmd);
         low_udp.InitCmdData(low_cmd);
@@ -80,7 +84,7 @@ void highCmdCallback(const unitree_legged_msgs::HighCmd::ConstPtr &msg)
     printf("highCmdCallback is running !\t%ld\n", ::high_count++);
 
     custom.high_cmd = rosMsg2Cmd(*msg);
-
+    
     unitree_legged_msgs::HighState high_state_ros;
 
     high_state_ros = state2rosMsg(custom.high_state);
