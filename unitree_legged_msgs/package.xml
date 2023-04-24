@@ -14,6 +14,8 @@
   <depend>message_generation</depend>
   <depend>std_msgs</depend>
   <depend>geometry_msgs</depend>
+  <depend>cpp_common</depend>
+  <depend>roscpp</depend>
   <depend>sensor_msgs</depend>
-  
+
 </package>
