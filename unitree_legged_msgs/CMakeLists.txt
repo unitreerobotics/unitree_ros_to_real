@@ -2,10 +2,13 @@ cmake_minimum_required(VERSION 2.8.3)
 project(unitree_legged_msgs)
 
 find_package(catkin REQUIRED COMPONENTS
+  cpp_common
   message_generation
   std_msgs
   geometry_msgs
   sensor_msgs
+  roscpp
+  rostime
 )
 
 add_message_files(
