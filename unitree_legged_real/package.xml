@@ -15,6 +15,7 @@
   <exec_depend>roscpp</exec_depend>
   <exec_depend>std_msgs</exec_depend>
   <depend>unitree_legged_msgs</depend>
+  <depend>unitree_legged_sdk</depend>
   <depend>eigen</depend>
 
 </package>
